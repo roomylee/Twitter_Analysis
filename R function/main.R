@@ -50,9 +50,15 @@ main <- function()
       make_cloud(Noun_list, city_name, 100)
       
       
-      #extract top 5 words
-      top<-head(sort(Noun_list,decreasing=T),6)
+      #extract top 5 words & Encoding
+      noun_table <- table(Noun_list)
+      top <- head(sort(noun_table,decreasing=T),6)
       topn <- names(top)
+      Encoding(topn[2]) <- "euc-kr"
+      Encoding(topn[3]) <- "euc-kr"
+      Encoding(topn[4]) <- "euc-kr"
+      Encoding(topn[5]) <- "euc-kr"
+      Encoding(topn[6]) <- "euc-kr"
       
       #save the top words data
       nom <- table_city[j,5] / table_city[j,2]*100
@@ -60,14 +66,15 @@ main <- function()
       location <- c(location, str_c(table_city[j,3],":",table_city[j,4]))
     }
     #Make capital Word Cloud
-    whole_contents <- paste(whole_contents, capital_contents)
+    #whole_contents <- paste(whole_contents, capital_contents)
     capital_Noun_list <- extract_noun(capital_contents)
     make_cloud(capital_Noun_list, capital_name, 100)
   }
-  whole_Noun_list <- extract_noun(whole_contents)
+  #whole_Noun_list <- extract_noun(whole_contents)
   #make_cloud(whole_Noun_list, "Republic of Korea", 100)
   
   #Create Map
-  map_data <- data.frame(tootip, location)
-  Create_Map(map_data)
+  map_data <- data.frame(tooltip, location)
+  map <- Create_Map(map_data)
+  return (map)
 }
